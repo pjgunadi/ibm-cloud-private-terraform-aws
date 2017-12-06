@@ -1,14 +1,14 @@
-#Terraform Template for ICP Deployment in AWS
+# Terraform Template for ICP Deployment in AWS
 
-##Before you start
+## Before you start
 You need an AWS account and be aware that **applying this template may incur charges to your AWS account**.
 
-##Summary
+## Summary
 This terraform template perform the following tasks:
 - Provision AWS environment for IBM Cloud Private
 - [Call ICP Provisioning Module](https://github.com/pjgunadi/terraform-module-icp-deploy)
 
-##Input
+## Input
 | Variable      | Description    | Sample Value |
 | ------------- | -------------- | ------------ |
 | access_key    | AWS Acces Key  | xxxxxxxxxxxx |
@@ -23,7 +23,7 @@ This terraform template perform the following tasks:
 | worker | Worker node information | {nodes="3", name="worker", instance_type="t2.medium"} |
 | management | Management node information | {nodes="1", name="management", instance_type="t2.large"} |
 
-##Deployment step
+## Deployment step
 1. Clone this repository: `git clone https://github.com/pjgunadi/ibm-cloud-private-terraform-aws.git`
 2. [Download terraform](https://www.terraform.io/) if you don't have one
 3. Create terraform variable file with your input value e.g. `terraform.tfvars`
@@ -33,13 +33,13 @@ terraform init
 terraform plan
 terraform apply
 ```
-##ICP Provisioning Module
+## ICP Provisioning Module
 This [ICP Provisioning module](https://github.com/pjgunadi/terraform-module-icp-deploy) is forked from [IBM Cloud Architecture](https://github.com/ibm-cloud-architecture/terraform-module-icp-deploy)
 with few modifications:
 - Added Management nodes section
 - Separate Local IP and Public IP variables
 - Added boot-node IP variable
 
-##Limitations
+## Limitations
 1. Current template attach fixed size of additional block storage. It can be set as variable in the future. In the mean time, you can update in the template directly
 2. Security Group rules still require enhancement
