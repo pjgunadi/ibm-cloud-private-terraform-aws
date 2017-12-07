@@ -1,13 +1,3 @@
-variable access_key {
-    description = "AWS Access Key"
-}
-variable secret_key {
-    description = "AWS Secret Key"
-}
-variable region {
-    description = "AWS Region"
-    default = "ap-southeast-1"
-}
 variable image_id {
     description = "Image ID, Ubuntu: ami-10acfb73, RHEL: ami-10bb2373"
     default = "ami-10acfb73"
