@@ -6,9 +6,9 @@ variable key_pair_name {
     description = "AWS Key Pair Name"
     default = "aws-key"
 }
-variable public_key_path {
-    description = "AWS Public Key Path"
-    default = "aws-key.pub"
+variable public_key {
+    description = "AWS Public Key"
+    default = ""
 }
 variable "ssh_user" {
     description = "SSH User ubuntu: ubuntu, rhel: ec2-user"

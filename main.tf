@@ -125,7 +125,7 @@ resource "aws_security_group" "proxy_secgrp" {
 
 resource "aws_key_pair" "cam_public_key" {
   key_name   = "${var.key_pair_name}"
-  public_key = "${file(var.public_key_path)}"
+  public_key = "${var.public_key)}"
 }
 resource "tls_private_key" "ssh" {
   algorithm = "RSA"
