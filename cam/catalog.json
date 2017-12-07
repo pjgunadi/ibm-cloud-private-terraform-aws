@@ -24,12 +24,12 @@
     },
     "metadata": {
       "displayName": "IBM Cloud Private Deployment in Amazon Web Services",
-      "providerDisplayName": "EC2",
+      "providerDisplayName": "Amazon_EC2",
       "longDescription": "Important note: This deployment may incur cost to your AWS account",
       "bullets": [
         {
           "title": "Clouds",
-          "description": "<ul style=\"list-style-type: disc; margin-left: 12px;\"><li>Amazon Web Services (AWS)</li><li>IBM Cloud/Softlayer</li></ul>"
+          "description": "<ul style=\"list-style-type: disc; margin-left: 12px;\"><li>Amazon Web Services (AWS)</li></ul>"
         },
         {
           "title": "Template version",
