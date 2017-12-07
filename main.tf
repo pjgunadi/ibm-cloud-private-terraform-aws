@@ -125,7 +125,7 @@ resource "aws_security_group" "proxy_secgrp" {
 
 resource "aws_key_pair" "cam_public_key" {
   key_name   = "${var.key_pair_name}"
-  public_key = "${file(var.public_key_path)}"
+  public_key = "${var.public_key}"
 }
 resource "tls_private_key" "ssh" {
   algorithm = "RSA"
@@ -519,7 +519,6 @@ module "icpprovision" {
     "default_admin_password"    = "${var.icpadmin_password}"
     "calico_ipip_enabled"       = "true"
     "cluster_access_ip"         = "${element(aws_instance.master.*.public_ip, 0)}"
-    "kubelet_extra_args"        = ["--eviction-hard=memory.available<100Mi,nodefs.available<2Gi,nodefs.inodesFree<5%", "--image-gc-high-threshold=100%", "--image-gc-low-threshold=100%"]
   }
 
   generate_key = true
