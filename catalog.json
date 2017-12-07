@@ -1,0 +1,48 @@
+{
+    "name": "ICP deployment in AWS",
+    "description": "IBM Cloud Private Deployment in Amazon Web Services",
+    "version": "2.1.0.0",
+    "imageUrl": "",
+    "image": "",
+    "type": "prebuilt",
+    "status": "active",
+    "manifest": {
+      "template_type": "Terraform",
+      "template_format": "HCL",
+      "template_provider": "IBM",
+      "template": {
+        "templateData": "",
+        "templateVariables": "",
+        "templateOutput": ""
+      },
+      "template_source": {
+        "githubRepoUrl": "",
+        "githubAccessToken": "",
+        "relativePathToTemplateFolder": "",
+        "templateFileName": ""
+      }
+    },
+    "metadata": {
+      "displayName": "IBM Cloud Private Deployment in Amazon Web Services",
+      "providerDisplayName": "IBM",
+      "longDescription": "Important note: This deployment may incur cost to your AWS account",
+      "bullets": [
+        {
+          "title": "Clouds",
+          "description": "<ul style=\"list-style-type: disc; margin-left: 12px;\"><li>Amazon Web Services (AWS)</li><li>IBM Cloud/Softlayer</li></ul>"
+        },
+        {
+          "title": "Template version",
+          "description": "V0.1"
+        },
+        {
+          "title": "Operating systems supported",
+          "description": "<ul style=\"list-style-type: disc; margin-left: 12px;\"><li>RedHat Enterprise Server 7.4</li><li>Ubuntu 16.04</li></ul>"
+        },
+        {
+          "title": "Default virtual machine settings",
+          "description": "<ul><li>AWS:<ul style=\"margin-left: 20px;\"><li>Flavor: Size = db.t2.micro, Storage = 10GB</li><li>Network: Private IP - in 10.0.1.0/24, Public IP - Computed</li><li>Firewall:<ul style=\"margin-left: 20px;\"><li>Ingress - Only allows SSH, ICMP, TCP 3306 for all sources;</li><li>Egress - All</li></ul></li></ul></li><li>IBM Cloud:<ul style=\"margin-left: 20px;\"><li>Flavor: Cores = 1, Memory = 1GB, Storage = 25GB SAN</li><li>Network: Private IP - Computed, Public IP - Computed</li><li>Firewall: Not enabled</li></ul></li></ul>"
+        }
+      ]
+    }
+  }
