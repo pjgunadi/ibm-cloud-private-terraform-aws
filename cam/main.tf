@@ -1,4 +1,5 @@
-
+provider "aws" {
+}
 resource "aws_vpc" "icp_vpc" {
   cidr_block = "172.16.0.0/16"
 }

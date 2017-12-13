@@ -24,7 +24,7 @@
     },
     "metadata": {
       "displayName": "IBM Cloud Private Deployment in Amazon Web Services",
-      "providerDisplayName": "Amazon_EC2",
+      "providerDisplayName": "Amazon EC2",
       "longDescription": "Important note: This deployment may incur cost to your AWS account",
       "bullets": [
         {
