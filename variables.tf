@@ -33,7 +33,7 @@ variable "master" {
     default = {
         nodes = "1"
         name = "master"
-        instance_type = "t2.large"
+        instance_type = "t2.xlarge"
     }
 }
 variable "proxy" {
@@ -57,6 +57,6 @@ variable "management" {
     default = {
         nodes = "1"
         name = "management"
-        instance_type = "t2.large"
+        instance_type = "t2.xlarge"
     }
 }

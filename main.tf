@@ -519,6 +519,7 @@ module "icpprovision" {
     "default_admin_password"    = "${var.icpadmin_password}"
     "calico_ipip_enabled"       = "true"
     "cluster_access_ip"         = "${element(aws_instance.master.*.public_ip, 0)}"
+    "proxy_access_ip"           = "${element(aws_instance.proxy.*.public_ip, 0)}"
   }
 
   generate_key = true
