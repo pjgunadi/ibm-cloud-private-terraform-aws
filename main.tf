@@ -33,13 +33,6 @@ resource "aws_security_group" "common_secgrp" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # Calico from VPC
-  ingress {
-    from_port   = 179
-    to_port     = 179
-    protocol    = "tcp"
-    cidr_blocks = ["${aws_vpc.icp_vpc.cidr_block}"]
-  }
   ingress {
     from_port   = 0
     to_port     = 0
@@ -168,7 +161,8 @@ resource "aws_instance" "master" {
     host = "${self.public_ip}"
   }
 
-  user_data = <<EOF
+  provisioner "file" {
+    content = <<EOF
 #!/bin/bash
 #Create Physical Volumes
 pvcreate /dev/xvdf 
@@ -211,6 +205,8 @@ EOL
 #Mount Filesystems
 mount -a
 EOF
+    destination = "/tmp/createfs.sh"
+  }
 
   provisioner "file" {
     content = <<EOF
@@ -234,6 +230,7 @@ EOF
   # Add Public Key
   provisioner "remote-exec" {
     inline = [
+      "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh",
       "chmod +x /tmp/addkey.sh; sudo bash /tmp/addkey.sh \"${aws_key_pair.cam_public_key.public_key}\"",
       "chmod 600 $HOME/.ssh/id_rsa"
     ]
@@ -268,7 +265,8 @@ resource "aws_instance" "proxy" {
     host = "${self.public_ip}"
   }
 
-  user_data = <<EOF
+  provisioner "file" {
+    content = <<EOF
 #!/bin/bash
 #Create Physical Volumes
 pvcreate /dev/xvdf 
@@ -297,6 +295,8 @@ EOL
 #Mount Filesystems
 mount -a
 EOF
+    destination = "/tmp/createfs.sh"
+  }
 
   provisioner "file" {
     content = <<EOF
@@ -315,6 +315,7 @@ EOF
   # Add Public Key
   provisioner "remote-exec" {
     inline = [
+      "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh",
       "chmod +x /tmp/addkey.sh; sudo bash /tmp/addkey.sh \"${aws_key_pair.cam_public_key.public_key}\""
     ]
   }
@@ -354,7 +355,8 @@ resource "aws_instance" "management" {
     host = "${self.public_ip}"
   }
 
-  user_data = <<EOF
+  provisioner "file" {
+    content = <<EOF
 #!/bin/bash
 #Create Physical Volumes
 pvcreate /dev/xvdf 
@@ -389,7 +391,9 @@ EOL
 #Mount Filesystems
 mount -a
 EOF
-
+    destination = "/tmp/createfs.sh"
+  }
+  
   provisioner "file" {
     content = <<EOF
 #!/bin/bash
@@ -407,6 +411,7 @@ EOF
   # Add Public Key
   provisioner "remote-exec" {
     inline = [
+      "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh",
       "chmod +x /tmp/addkey.sh; sudo bash /tmp/addkey.sh \"${aws_key_pair.cam_public_key.public_key}\""
     ]
   }
@@ -440,7 +445,8 @@ resource "aws_instance" "worker" {
     host = "${self.public_ip}"
   }
 
-  user_data = <<EOF
+  provisioner "file" {
+    content = <<EOF
 #!/bin/bash
 #Create Physical Volumes
 pvcreate /dev/xvdf 
@@ -469,6 +475,8 @@ EOL
 #Mount Filesystems
 mount -a
 EOF
+    destination = "/tmp/createfs.sh"
+  }
 
   provisioner "file" {
     content = <<EOF
@@ -487,6 +495,7 @@ EOF
   # Add Public Key
   provisioner "remote-exec" {
     inline = [
+      "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh",
       "chmod +x /tmp/addkey.sh; sudo bash /tmp/addkey.sh \"${aws_key_pair.cam_public_key.public_key}\""
     ]
   }
