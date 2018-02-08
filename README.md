@@ -25,6 +25,23 @@ terraform plan
 ```
 terraform apply
 ```
-
+## Add/Remove Worker Nodes
+1. Edit existing deployed terraform variable e.g. `terraform.tfvars`
+2. Increase/decrease the `nodes` under the `worker` map variable. Example:
+```
+worker = {
+    nodes         = "4"
+    name          = "worker"
+    instance_type = "t2.xlarge"
+    kubelet_lv    = "10"
+    docker_lv     = "90"
+}
+```
+**Note:** The data disk size is the sume of LV variables + 1 (e.g kubelet_lv + docker_lv + 1).
+3. Re-apply terraform template:
+```
+terraform plan
+terraform apply -auto-approve
+```
 ## ICP and Gluster Provisioning Module
 The ICP and GlusterFS Installation is performed by [ICP Provisioning module](https://github.com/pjgunadi/terraform-module-icp-deploy) 
