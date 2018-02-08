@@ -1,3 +1,3 @@
 output "icp_url" {
-  value = "https://${element(aws_instance.master.*.public_ip, 0)}:8443"
+  value = "https://${aws_instance.master.0.public_ip}:8443"
 }
