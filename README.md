@@ -37,7 +37,7 @@ worker = {
     docker_lv     = "90"
 }
 ```
-**Note:** The data disk size is the sume of LV variables + 1 (e.g kubelet_lv + docker_lv + 1).
+**Note:** The data disk size is the sume of LV variables + 1 (e.g kubelet_lv + docker_lv + 1).  
 3. Re-apply terraform template:
 ```
 terraform plan
