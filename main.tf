@@ -156,6 +156,7 @@ data "template_file" "createfs_master" {
     docker_lv = "${var.master["docker_lv"]}"
     etcd_lv = "${var.master["etcd_lv"]}"
     registry_lv = "${var.master["registry_lv"]}"
+    management_lv = "${var.master["management_lv"]}"
   }
 }
 data "template_file" "createfs_proxy" {
@@ -199,7 +200,7 @@ resource "aws_instance" "master" {
   ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
-    volume_size = "${var.master["kubelet_lv"] + var.master["docker_lv"] + var.master["registry_lv"] + var.master["etcd_lv"] + 1}"
+    volume_size = "${var.master["kubelet_lv"] + var.master["docker_lv"] + var.master["registry_lv"] + var.master["etcd_lv"] + var.master["management_lv"] + 1}"
   }
 
   connection {
