@@ -1,13 +1,8 @@
-
 provider "aws" {
   access_key = "${var.access_key}"
   secret_key = "${var.secret_key}"
   region     = "${var.region}"
 }
-# resource "aws_key_pair" "cam_public_key" {
-#   key_name   = "${var.key_pair_name}"
-#   public_key = "${var.public_key}"
-# }
 resource "tls_private_key" "ssh" {
   algorithm = "RSA"
 
@@ -181,7 +176,13 @@ data "template_file" "createfs_worker" {
     docker_lv = "${var.worker["docker_lv"]}"
   }
 }
-
+//locals
+locals {
+  icp_boot_node_ip = "${aws_instance.master.0.public_ip}"
+  heketi_ip = "${aws_instance.worker.0.public_ip}"
+  ssh_options = "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+}
+//instances
 resource "aws_instance" "master" {
   count = "${var.master["nodes"]}"
   instance_type = "${var.master["instance_type"]}"
@@ -214,15 +215,15 @@ resource "aws_instance" "master" {
     destination = "/tmp/createfs.sh"
   }
 
-  provisioner "file" {
-    content = "${count.index == 0 ? tls_private_key.ssh.private_key_pem : ""}"
-    destination = "$HOME/.ssh/id_rsa"
-  }
+  # provisioner "file" {
+  #   content = "${count.index == 0 ? tls_private_key.ssh.private_key_pem : ""}"
+  #   destination = "$HOME/.ssh/id_rsa"
+  # }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh",
-      "chmod 600 $HOME/.ssh/id_rsa"
+      "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh"
+      #"chmod 600 $HOME/.ssh/id_rsa"
     ]
   }
 }
@@ -349,6 +350,23 @@ resource "aws_instance" "worker" {
       "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh"
     ]
   }
+
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "scp -i ${var.key_pair_name} ${local.ssh_options} ${path.module}/scripts/destroy/delete_worker.sh ${var.ssh_user}@${local.icp_boot_node_ip}:/tmp/"
+  }
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_worker.sh; /tmp/delete_worker.sh ${var.icp_version} ${self.private_ip}\"; echo done"
+  } 
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "scp -i ${var.key_pair_name} ${local.ssh_options} ${path.module}/scripts/destroy/delete_gluster.sh ${var.ssh_user}@${local.heketi_ip}:/tmp/"
+  }
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.heketi_ip} \"chmod +x /tmp/delete_gluster.sh; /tmp/delete_gluster.sh ${self.private_ip}\"; echo done"
+  }
 }
 
 resource "aws_instance" "gluster" {
@@ -378,6 +396,15 @@ resource "aws_instance" "gluster" {
     private_key = "${tls_private_key.ssh.private_key_pem}"
     host = "${self.public_ip}"
   }
+
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "scp -i ${var.key_pair_name} ${local.ssh_options} ${path.module}/scripts/destroy/delete_gluster.sh ${var.ssh_user}@${local.heketi_ip}:/tmp/"
+  }
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.heketi_ip} \"chmod +x /tmp/delete_gluster.sh; /tmp/delete_gluster.sh ${self.private_ip}\"; echo done"
+  }  
 }
 
 module "icpprovision" {
