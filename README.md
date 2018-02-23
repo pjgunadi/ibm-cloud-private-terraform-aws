@@ -13,9 +13,9 @@ This terraform template perform the following tasks:
 2. [Download terraform](https://www.terraform.io/) if you don't have one
 3. Login to AWS and create an API access and secret key. [Reference](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html)
 4. Rename [terraform_tfvars.sample](terraform_tfvars.sample) file as `terraform.tfvars` and update the input values as needed.
-5. Initialize Terraform
+5. Initialize Terraform to download and update the dependencies
 ```
-terraform init
+terraform init -upgrade
 ```
 6. Review Terraform plan
 ```
