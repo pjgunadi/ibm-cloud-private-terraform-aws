@@ -9,6 +9,9 @@ resource "tls_private_key" "ssh" {
   provisioner "local-exec" {
     command = "cat > ${var.key_pair_name} <<EOL\n${tls_private_key.ssh.private_key_pem}\nEOL"
   }
+  provisioner "local-exec" {
+    command = "chmod 600 ${var.key_pair_name}"
+  }
 }
 resource "aws_key_pair" "aws_public_key" {
   key_name = "${var.key_pair_name}"
