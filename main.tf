@@ -310,6 +310,8 @@ resource "aws_instance" "management" {
 }
 
 resource "aws_instance" "worker" {
+  depends_on = ["aws_instance.master","aws_security_group.common_secgrp","aws_internet_gateway.icp_igw","aws_key_pair.aws_public_key","aws_route.internet_access"]
+  
   count = "${var.worker["nodes"]}"
   instance_type = "${var.worker["instance_type"]}"
   ami = "${var.image_id}"
@@ -373,6 +375,8 @@ resource "aws_instance" "worker" {
 }
 
 resource "aws_instance" "gluster" {
+  depends_on = ["aws_security_group.common_secgrp","aws_internet_gateway.icp_igw","aws_key_pair.aws_public_key","aws_route.internet_access"]
+  
   count = "${var.gluster["nodes"]}"
   instance_type = "${var.gluster["instance_type"]}"
   ami = "${var.image_id}"
