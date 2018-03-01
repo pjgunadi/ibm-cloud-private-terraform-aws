@@ -5,7 +5,7 @@ You need an AWS account and be aware that **applying this template may incur cha
 
 ## Summary
 This terraform template perform the following tasks:
-- Provision AWS environment for IBM Cloud Private (ICP)
+- Provision IBM Cloud Private (ICP) in AWS
 - [Provision ICP and GlusterFS from external module](https://github.com/pjgunadi/terraform-module-icp-deploy)
 
 ## Deployment step from Terraform CLI

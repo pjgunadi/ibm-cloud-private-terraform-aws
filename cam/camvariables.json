@@ -1,0 +1,176 @@
+[
+  {
+    "name": "image_id",
+    "label": "Image ID",
+    "description": "EC2 Image ID",
+    "default": "ami-10acfb73",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string",
+    "options": [
+      {
+        "value": "ami-10acfb73",
+        "label": "Ubuntu 16.04"
+      },
+      {
+          "value": "ami-10bb2373",
+          "label": "Redhat 7.4"
+      }
+    ]
+  },
+  {
+    "name": "key_pair_name",
+    "label": "SSH Key Pair Name",
+    "description": "Select SSH Key Name that has been registered in EC2",
+    "default": "aws-key",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "aws_vpc_cidr",
+    "label": "AWS VPC CIDR",
+    "description": "AWS VPC CIDR",
+    "default": "10.10.0.0/16",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "aws_subnet",
+    "label": "AWS Subnet",
+    "description": "AWS Subnet",
+    "default": "10.10.0.0/24",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },    
+  {
+    "name": "ssh_user",
+    "label": "SSH Login Username",
+    "description": "User to execute commands in linux instances",
+    "default": "root",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "icpadmin_password",
+    "label": "ICP admin password",
+    "description": "Password for ICP admin",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": true,
+    "type": "string"
+  },
+  {
+    "name": "instance_prefix",
+    "label": "Hostname Prefix",
+    "description": "Type unique instance prefix, example: icp-<your-initials>",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "network_cidr",
+    "label": "Network CIDR",
+    "description": "Network CIDR",
+    "default": "172.16.0.0/16",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "cluster_ip_range",
+    "label": "Cluster IP Range",
+    "description": "Cluster IP Range",
+    "default": "192.168.0.1/24",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "cluster_name",
+    "label": "Cluster Name",
+    "description": "Type the name of ICP Cluster",
+    "default": "sgdemo",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "install_gluster",
+    "label": "Install Gluster",
+    "description": "Install Gluster",
+    "default": "true",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "boolean"
+  },
+  {
+    "name": "master",
+    "label": "Master Node",
+    "description": "Master Node Informations",
+    "default": {"nodes": "1", "name": "master", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"50","registry_lv":"15","etcd_lv":"4","management_lv":"20"},
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "map"
+  },
+  {
+    "name": "proxy",
+    "label": "Proxy Node",
+    "description": "Proxy Node Informations",
+    "default": {"nodes": "0", "name": "proxy", "instance_type": "t2.medium", "kubelet_lv":"10","docker_lv":"39"},
+    "hidden": true,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "map"
+  },
+  {
+    "name": "management",
+    "label": "Management Node",
+    "description": "Management Node Informations",
+    "default": {"nodes": "1", "name": "mgmt", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"40","management_lv":"49"},
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "map"
+  },
+  {
+    "name": "worker",
+    "label": "Worker Node",
+    "description": "Worker Node Informations",
+    "default": {"nodes": "3", "name": "worker", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"89","glusterfs":"100"},
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "map"
+  }
+]
+  

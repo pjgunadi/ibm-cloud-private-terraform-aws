@@ -1,0 +1,44 @@
+{
+  "name": "ICP deployment in AWS",
+  "description": "IBM Cloud Private Deployment in Amazon Web Services",
+  "version": "2.1.0.1",
+  "imageUrl": "",
+  "image": "",
+  "type": "prebuilt",
+  "status": "active",
+  "manifest": {
+    "template_type": "Terraform",
+    "template_format": "HCL",
+    "template_provider": "Amazon EC2",
+    "template": {
+      "templateData": "",
+      "templateVariables": "",
+      "templateOutput": ""
+    },
+    "template_source": {
+      "githubRepoUrl": "",
+      "githubAccessToken": "",
+      "relativePathToTemplateFolder": "cam",
+      "templateFileName": ""
+    }
+  },
+  "metadata": {
+    "displayName": "IBM Cloud Private Deployment in Amazon Web Services",
+    "providerDisplayName": "Amazon EC2",
+    "longDescription": "Important note: This deployment may incur cost to your AWS account",
+    "bullets": [
+      {
+        "title": "Clouds",
+        "description": "<ul style=\"list-style-type: disc; margin-left: 12px;\"><li>Amazon Web Services (AWS)</li></ul>"
+      },
+      {
+        "title": "Template version",
+        "description": "V0.1"
+      },
+      {
+        "title": "Operating systems supported",
+        "description": "<ul style=\"list-style-type: disc; margin-left: 12px;\"><li>RedHat Enterprise Server 7.4</li><li>Ubuntu 16.04</li></ul>"
+      }
+    ]
+  }
+}
