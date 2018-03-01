@@ -56,8 +56,7 @@
   {
     "name": "ssh_user",
     "label": "SSH Login Username",
-    "description": "User to execute commands in linux instances",
-    "default": "root",
+    "description": "Type one of the following depending on the OS: ubuntu (Ubuntu) or ec2-user (RedHat)",
     "hidden": false,
     "immutable": false,
     "required": true,
