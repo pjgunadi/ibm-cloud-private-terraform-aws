@@ -356,6 +356,14 @@ resource "aws_instance" "worker" {
     ]
   }
 
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "cat > ${var.key_pair_name} <<EOL\n${tls_private_key.ssh.private_key_pem}\nEOL"
+  }
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "chmod 600 ${var.key_pair_name}"
+  }
   # provisioner "local-exec" {
   #   when    = "destroy"
   #   command = "scp -i ${var.key_pair_name} ${local.ssh_options} ${path.module}/scripts/destroy/delete_worker.sh ${var.ssh_user}@${local.icp_boot_node_ip}:/tmp/"
@@ -415,7 +423,7 @@ resource "aws_instance" "gluster" {
 }
 
 module "icpprovision" {
-  source = "github.com/pjgunadi/terraform-module-icp-deploy"
+  source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=test"
   //Connection IPs
   icp-ips = "${concat(aws_instance.master.*.public_ip, aws_instance.proxy.*.public_ip, aws_instance.management.*.public_ip, aws_instance.worker.*.public_ip)}"
   boot-node = "${element(aws_instance.master.*.public_ip, 0)}"
