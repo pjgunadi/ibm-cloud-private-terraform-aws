@@ -218,15 +218,9 @@ resource "aws_instance" "master" {
     destination = "/tmp/createfs.sh"
   }
 
-  # provisioner "file" {
-  #   content = "${count.index == 0 ? tls_private_key.ssh.private_key_pem : ""}"
-  #   destination = "$HOME/.ssh/id_rsa"
-  # }
-
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/createfs.sh; sudo /tmp/createfs.sh"
-      #"chmod 600 $HOME/.ssh/id_rsa"
     ]
   }
 }
@@ -412,14 +406,50 @@ resource "aws_instance" "gluster" {
     host = "${self.public_ip}"
   }
 
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "cat > ${var.key_pair_name} <<EOL\n${tls_private_key.ssh.private_key_pem}\nEOL"
+  }
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "chmod 600 ${var.key_pair_name}"
+  }
   # provisioner "local-exec" {
   #   when    = "destroy"
   #   command = "scp -i ${var.key_pair_name} ${local.ssh_options} ${path.module}/scripts/destroy/delete_gluster.sh ${var.ssh_user}@${local.heketi_ip}:/tmp/"
   # }
-  # provisioner "local-exec" {
-  #   when    = "destroy"
-  #   command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.heketi_ip} \"chmod +x /tmp/delete_gluster.sh; /tmp/delete_gluster.sh ${self.private_ip}\"; echo done"
-  # }  
+  provisioner "local-exec" {
+    when    = "destroy"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.heketi_ip} \"chmod +x /tmp/delete_gluster.sh; /tmp/delete_gluster.sh ${self.private_ip}\"; echo done"
+  }
+}
+
+resource "null_resource" "copy_delete_worker" {
+
+  connection {
+    host = "${local.icp_boot_node_ip}"
+    user = "${var.ssh_user}"
+    private_key = "${tls_private_key.ssh.private_key_pem}"
+  }
+
+  provisioner "file" {
+    source = "${path.module}/scripts/destroy_delete_worker.sh"
+    destination = "/tmp/delete_worker.sh"
+  }
+}
+
+resource "null_resource" "copy_delete_gluster" {
+
+  connection {
+    host = "${local.heketi_ip}"
+    user = "${var.ssh_user}"
+    private_key = "${tls_private_key.ssh.private_key_pem}"
+  }
+
+  provisioner "file" {
+    source = "${path.module}/scripts/destroy_delete_gluster.sh"
+    destination = "/tmp/delete_gluster.sh"
+  }
 }
 
 module "icpprovision" {
