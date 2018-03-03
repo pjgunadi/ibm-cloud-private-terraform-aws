@@ -433,7 +433,7 @@ resource "null_resource" "copy_delete_worker" {
   }
 
   provisioner "file" {
-    source = "${path.module}/scripts/destroy_delete_worker.sh"
+    source = "${path.module}/scripts/destroy/delete_worker.sh"
     destination = "/tmp/delete_worker.sh"
   }
 }
@@ -447,7 +447,7 @@ resource "null_resource" "copy_delete_gluster" {
   }
 
   provisioner "file" {
-    source = "${path.module}/scripts/destroy_delete_gluster.sh"
+    source = "${path.module}/scripts/destroy/delete_gluster.sh"
     destination = "/tmp/delete_gluster.sh"
   }
 }
