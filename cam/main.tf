@@ -453,7 +453,8 @@ resource "null_resource" "copy_delete_gluster" {
 }
 
 module "icpprovision" {
-  source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=test"
+  source = "github.com/pjgunadi/terraform-module-icp-deploy"
+  #source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=test"
   //Connection IPs
   icp-ips = "${concat(aws_instance.master.*.public_ip, aws_instance.proxy.*.public_ip, aws_instance.management.*.public_ip, aws_instance.worker.*.public_ip)}"
   boot-node = "${element(aws_instance.master.*.public_ip, 0)}"
