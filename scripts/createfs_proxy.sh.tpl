@@ -1,4 +1,13 @@
 #!/bin/bash
+#Check and install LVM Prerequisites
+if ! pvdisplay; then
+  if grep -q -i ubuntu /etc/*release; then
+    apt-get -y install lvm2
+  else
+    yum install -y lvm2
+  fi
+fi
+
 #Create Physical Volumes
 pvcreate /dev/xvdf
 

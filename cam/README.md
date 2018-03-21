@@ -26,7 +26,6 @@ This terraform template perform the following tasks:
 5. Click `Plan Changes`
 6. Review the plan in the Log Output and click `Apply Changes`
 
-**Note:** 
 **Note:** The data disk size is the sume of LV variables + 1 (e.g kubelet_lv + docker_lv + 1).  
 
 ## ICP and Gluster Provisioning Module
