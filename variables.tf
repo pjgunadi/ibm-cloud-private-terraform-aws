@@ -1,122 +1,176 @@
 variable access_key {
-    description = "AWS Access Key"
+  description = "AWS Access Key"
 }
+
 variable secret_key {
-    description = "AWS Secret Key"
+  description = "AWS Secret Key"
 }
+
 variable region {
-    description = "AWS Region"
-    default = "ap-southeast-1"
+  description = "AWS Region"
+  default     = "ap-southeast-1"
 }
+
 variable image_id {
-    description = "Image ID, Ubuntu: ami-10acfb73, RHEL: ami-10bb2373"
-    default = "ami-10acfb73"
+  description = "Image ID, Ubuntu: ami-10acfb73, RHEL: ami-10bb2373"
+  default     = "ami-10acfb73"
 }
+
 variable key_pair_name {
-    description = "AWS Key Pair Name"
-    default = "aws-key"
+  description = "AWS Key Pair Name"
+  default     = "aws-key"
 }
+
 variable public_key {
-    description = "AWS Public Key"
-    default = ""
+  description = "AWS Public Key"
+  default     = ""
 }
+
 variable aws_vpc_cidr {
-    default = "10.10.0.0/16"
+  default = "10.10.0.0/16"
 }
+
 variable aws_subnet {
-    default = "10.10.0.0/24"
+  default = "10.10.0.0/24"
 }
+
 variable "ssh_user" {
-    description = "SSH User ubuntu: ubuntu, rhel: ec2-user"
-    default = "ubuntu"
+  description = "SSH User ubuntu: ubuntu, rhel: ec2-user"
+  default     = "ubuntu"
 }
+
 ##### ICP Instance details ######
 variable "icp_version" {
-    description = "ICP Version"
-    default = "2.1.0.1"
+  description = "ICP Version"
+  default     = "2.1.0.1"
 }
+
 variable "network_cidr" {
-    default = "172.16.0.0/16"
+  default = "172.16.0.0/16"
 }
+
 variable "cluster_ip_range" {
-    default = "10.10.1.1/24"
+  default = "10.10.1.1/24"
 }
+
 variable "cluster_name" {
-    default = "mycluster"
+  default = "mycluster"
 }
+
 variable icp_source_server {
-    default = ""
+  default = ""
 }
+
 variable icp_source_user {
-    default = ""
+  default = ""
 }
+
 variable icp_source_password {
-    default = ""
+  default = ""
 }
+
 variable icp_source_path {
-    default = ""
+  default = ""
 }
+
 variable install_gluster {
-    default = false
+  default = false
 }
+
 variable "instance_prefix" {
-    default = "icp"
+  default = "icp"
 }
+
 variable "icpadmin_password" {
-    description = "ICP admin password"
-    default = "admin"
+  description = "ICP admin password"
+  default     = "admin"
 }
+
+variable "disable_management" {
+  default = ["va"]
+}
+
+variable "gluster_volume_type" {
+  default = "none"
+}
+
+variable "heketi_admin_pwd" {
+  default = "none"
+}
+
 variable "master" {
-    type = "map"
-    default = {
-        nodes = "1"
-        name = "master"
-        instance_type = "t2.xlarge"
-        kubelet_lv = "10"
-        docker_lv = "50"
-        registry_lv = "15"
-        etcd_lv = "4"
-        management_lv = "20"
-    }
+  type = "map"
+
+  default = {
+    nodes         = "1"
+    name          = "master"
+    instance_type = "t2.xlarge"
+    kubelet_lv    = "10"
+    docker_lv     = "50"
+    registry_lv   = "35"
+    etcd_lv       = "4"
+    management_lv = "100"
+  }
 }
+
 variable "proxy" {
-    type = "map"
-    default = {
-        nodes = "1"
-        name = "proxy"
-        instance_type = "t2.medium"
-        kubelet_lv = "10"
-        docker_lv = "40"
-    }
+  type = "map"
+
+  default = {
+    nodes         = "0"
+    name          = "proxy"
+    instance_type = "t2.medium"
+    kubelet_lv    = "10"
+    docker_lv     = "39"
+  }
 }
+
 variable "management" {
-    type = "map"
-    default = {
-        nodes = "1"
-        name = "management"
-        instance_type = "t2.xlarge"
-        kubelet_lv = "10"
-        docker_lv = "40"
-        management_lv = "50"
-    }
+  type = "map"
+
+  default = {
+    nodes         = "0"
+    name          = "management"
+    instance_type = "t2.xlarge"
+    kubelet_lv    = "10"
+    docker_lv     = "39"
+    management_lv = "100"
+  }
 }
+
+variable "va" {
+  type = "map"
+
+  default = {
+    nodes         = "1"
+    name          = "va"
+    instance_type = "t2.xlarge"
+    kubelet_lv    = "10"
+    docker_lv     = "39"
+    va_lv         = "100"
+  }
+}
+
 variable "worker" {
-    type = "map"
-    default = {
-        nodes = "3"
-        name = "worker"
-        instance_type = "t2.medium"
-        kubelet_lv = "10"
-        docker_lv = "90"
-        glusterfs = "100"
-    }
+  type = "map"
+
+  default = {
+    nodes         = "2"
+    name          = "worker"
+    instance_type = "t2.xlarge"
+    kubelet_lv    = "10"
+    docker_lv     = "89"
+    glusterfs     = "100"
+  }
 }
+
 variable "gluster" {
-    type = "map"
-    default = {
-        nodes = "0"
-        name = "gluster"
-        instance_type = "t2.medium"
-        glusterfs = "100"
-    }
+  type = "map"
+
+  default = {
+    nodes         = "3"
+    name          = "gluster"
+    instance_type = "t2.medium"
+    glusterfs     = "100"
+  }
 }

@@ -128,10 +128,31 @@
     "type": "boolean"
   },
   {
+    "name": "gluster_volume_type",
+    "label": "Gluster Volume Type",
+    "description": "Gluster Volume Type",
+    "default": "none",
+    "hidden": false,
+    "immutable": false,
+    "required": false,
+    "secured": false,
+    "type": "string"
+  },
+  {
+    "name": "heketi_admin_pwd",
+    "label": "Heketi Admin Password",
+    "description": "Heketi Admin Password",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": true,
+    "type": "string"
+  },     
+  {
     "name": "master",
     "label": "Master Node",
     "description": "Master Node Informations",
-    "default": {"nodes": "1", "name": "master", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"50","registry_lv":"15","etcd_lv":"4","management_lv":"20"},
+    "default": {"nodes": "1", "name": "master", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"50","registry_lv":"35","etcd_lv":"4","management_lv":"100"},
     "hidden": false,
     "immutable": false,
     "required": true,
@@ -153,7 +174,7 @@
     "name": "management",
     "label": "Management Node",
     "description": "Management Node Informations",
-    "default": {"nodes": "1", "name": "mgmt", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"40","management_lv":"49"},
+    "default": {"nodes": "0", "name": "mgmt", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"39","management_lv":"100"},
     "hidden": false,
     "immutable": false,
     "required": true,
@@ -161,10 +182,32 @@
     "type": "map"
   },
   {
+    "name": "va",
+    "label": "VA Node",
+    "description": "VA Node Informations",
+    "default": {"nodes": "0", "name": "va", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"39","management_lv":"100"},
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "map"
+  },  
+  {
     "name": "worker",
     "label": "Worker Node",
     "description": "Worker Node Informations",
-    "default": {"nodes": "3", "name": "worker", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"89","glusterfs":"100"},
+    "default": {"nodes": "2", "name": "worker", "instance_type": "t2.xlarge", "kubelet_lv":"10","docker_lv":"89"},
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "map"
+  },
+  {
+    "name": "gluster",
+    "label": "Gluster Node",
+    "description": "Gluster Node Informations",
+    "default": {"nodes": "3", "name": "worker", "instance_type": "t2.xlarge", "glusterfs":"100"},
     "hidden": false,
     "immutable": false,
     "required": true,
