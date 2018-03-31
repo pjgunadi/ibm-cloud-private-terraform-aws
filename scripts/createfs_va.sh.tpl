@@ -33,7 +33,7 @@ mkdir -p /var/lib/icp/va
 cat <<EOL | tee -a /etc/fstab
 /dev/mapper/icp--vg-kubelet--lv /var/lib/kubelet ext4 defaults 0 0
 /dev/mapper/icp--vg-docker--lv /var/lib/docker ext4 defaults 0 0
-/dev/mapper/icp--vg-va--lv /opt/ibm/cfc ext4 defaults 0 0
+/dev/mapper/icp--vg-va--lv /var/lib/icp/va ext4 defaults 0 0
 EOL
 
 #Mount Filesystems
