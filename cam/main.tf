@@ -113,7 +113,7 @@ resource "aws_security_group" "master_secgrp" {
     from_port   = 4300
     to_port     = 4300
     protocol    = "tcp"
-    cidr_blocks = ["${element(split(",",var.management["nodes"] == 0 ? var.network_cidr : join(",",aws_instance.management.*.public_ip)),0)}"]
+    cidr_blocks = ["${element(split(",",var.management["nodes"] == 0 ? var.network_cidr : join(",",formatlist("%s/32",aws_instance.management.*.public_ip))),0)}"]
   }
 }
 
@@ -565,26 +565,32 @@ module "icpprovision" {
   source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=2.1.0.2"
 
   //Connection IPs
-  icp-ips   = "${concat(aws_instance.master.*.public_ip, aws_instance.proxy.*.public_ip, aws_instance.management.*.public_ip, aws_instance.va.*.public_ip, aws_instance.worker.*.public_ip)}"
+  #icp-ips   = "${concat(aws_instance.master.*.public_ip, aws_instance.proxy.*.public_ip, aws_instance.management.*.public_ip, aws_instance.va.*.public_ip, aws_instance.worker.*.public_ip)}"
+  icp-ips = "${concat(aws_instance.master.*.public_ip)}"
+
   boot-node = "${element(aws_instance.master.*.public_ip, 0)}"
 
   //Configuration IPs
-  icp-master = ["${aws_instance.master.*.private_ip}"]
-  icp-worker = ["${aws_instance.worker.*.private_ip}"]
+  icp-master     = ["${aws_instance.master.*.private_ip}"]
+  icp-worker     = ["${aws_instance.worker.*.private_ip}"]
+  icp-proxy      = ["${split(",",var.proxy["nodes"] == 0 ? join(",",aws_instance.master.*.private_ip) : join(",",aws_instance.proxy.*.private_ip))}"]
+  icp-management = ["${split(",",var.management["nodes"] == 0 ? "" : join(",",aws_instance.management.*.private_ip))}"]
+  icp-va         = ["${split(",",var.va["nodes"] == 0 ? "" : join(",",aws_instance.va.*.private_ip))}"]
 
-  #icp-proxy  = ["${aws_instance.proxy.*.private_ip}"]
+  # Workaround for terraform issue #10857
+  cluster_size    = "${var.master["nodes"]}"
+  worker_size     = "${var.worker["nodes"]}"
+  proxy_size      = "${var.proxy["nodes"]}"
+  management_size = "${var.management["nodes"]}"
+  va_size         = "${var.va["nodes"]}"
 
-  icp-proxy           = ["${split(",",var.proxy["nodes"] == 0 ? join(",",aws_instance.master.*.private_ip) : join(",",aws_instance.proxy.*.private_ip))}"]
-  icp-management      = ["${split(",",var.management["nodes"] == 0 ? "" : join(",",aws_instance.management.*.private_ip))}"]
-  icp-va              = ["${split(",",var.va["nodes"] == 0 ? "" : join(",",aws_instance.va.*.private_ip))}"]
-  icp-version         = "${var.icp_version}"
   icp_source_server   = "${var.icp_source_server}"
   icp_source_user     = "${var.icp_source_user}"
   icp_source_password = "${var.icp_source_password}"
   image_file          = "${var.icp_source_path}"
-  # Workaround for terraform issue #10857
-  # When this is fixed, we can work this out autmatically
-  cluster_size = "${var.master["nodes"] + var.worker["nodes"] + var.proxy["nodes"] + var.management["nodes"] + var.va["nodes"]}"
+
+  icp-version = "${var.icp_version}"
+
   icp_configuration = {
     "cluster_name"                   = "${var.cluster_name}"
     "network_cidr"                   = "${var.network_cidr}"
@@ -604,9 +610,11 @@ module "icpprovision" {
     #"proxy_access_ip"          = "${aws_instance.proxy.0.public_ip}"
     #"proxy_access_ip"          = "${aws_instance.master.0.public_ip}"
   }
+
   #Gluster
   #Gluster and Heketi nodes are set to worker nodes for demo. Use separate nodes for production
   install_gluster = "${var.install_gluster}"
+
   gluster_size        = "${var.gluster["nodes"]}"
   gluster_ips         = ["${aws_instance.gluster.*.public_ip}"]
   gluster_svc_ips     = ["${aws_instance.gluster.*.private_ip}"]
