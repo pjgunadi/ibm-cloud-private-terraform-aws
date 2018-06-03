@@ -74,6 +74,27 @@
     "type": "string"
   },
   {
+    "name": "icp_version",
+    "label": "ICP Version",
+    "description": "ICP Version",
+    "default": "2.1.0.3",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string",
+    "options": [
+      {
+        "value": "2.1.0.3",
+        "label": "2.1.0.3"
+      },
+      {
+          "value": "2.1.0.3-ee",
+          "label": "2.1.0.3-ee"
+      }
+    ]
+  },  
+  {
     "name": "instance_prefix",
     "label": "Hostname Prefix",
     "description": "Type unique instance prefix, example: icp-<your-initials>",
