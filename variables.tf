@@ -87,7 +87,7 @@ variable "icpadmin_password" {
 }
 
 variable "disable_management" {
-  default = ["va"]
+  default = ["istio", "custom-metrics-adapter"]
 }
 
 variable "gluster_volume_type" {
