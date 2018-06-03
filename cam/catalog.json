@@ -1,7 +1,7 @@
 {
   "name": "ICP deployment in AWS",
   "description": "IBM Cloud Private Deployment in Amazon Web Services",
-  "version": "2.1.0.1",
+  "version": "2.1.0.3",
   "imageUrl": "",
   "image": "",
   "type": "prebuilt",
@@ -33,7 +33,7 @@
       },
       {
         "title": "Template version",
-        "description": "V0.1"
+        "description": "V0.3"
       },
       {
         "title": "Operating systems supported",
