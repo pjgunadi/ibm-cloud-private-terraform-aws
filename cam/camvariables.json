@@ -111,6 +111,18 @@
     "group_name": "image_parameters"
   },
   {
+    "name": "installer_size",
+    "label": "Installer Mount Point Size",
+    "description": "Installer Mount Point Size",
+    "default": "20",
+    "hidden": false,
+    "immutable": false,
+    "required": true,
+    "secured": false,
+    "type": "string",
+    "group_name": "image_parameters"
+  },  
+  {
     "name": "master",
     "label": "Master Node",
     "description": "Master Node Informations",
@@ -301,7 +313,7 @@
   {
     "name": "icp_source_server",
     "label": "ICP Source Server",
-    "description": "Installer Source Server",
+    "description": "Installer SFTP Server Host/IP or AWS S3 Region",
     "hidden": false,
     "immutable": false,
     "required": false,
@@ -312,7 +324,7 @@
   {
     "name": "icp_source_user",
     "label": "ICP Source Username",
-    "description": "Installer Source Username",
+    "description": "SFTP Server User or S3 Acces Key",
     "hidden": false,
     "immutable": false,
     "required": false,
@@ -323,7 +335,7 @@
   {
     "name": "icp_source_password",
     "label": "ICP Source Password",
-    "description": "Installer Source Password",
+    "description": "SFTP Server Password or S3 Secret Key",
     "hidden": false,
     "immutable": false,
     "required": false,
@@ -334,7 +346,7 @@
   {
     "name": "icp_source_path",
     "label": "ICP Source Path",
-    "description": "Installer Source Path",
+    "description": "SFTP or s3://<bucket>/<path>",
     "hidden": false,
     "immutable": false,
     "required": false,

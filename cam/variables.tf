@@ -98,6 +98,10 @@ variable "heketi_admin_pwd" {
   default = "none"
 }
 
+variable "installer_size" {
+  default = "20"
+}
+
 variable "master" {
   type = "map"
 

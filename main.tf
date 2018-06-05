@@ -170,6 +170,7 @@ data "template_file" "createfs_master" {
     etcd_lv       = "${var.master["etcd_lv"]}"
     registry_lv   = "${var.master["registry_lv"]}"
     management_lv = "${var.master["management_lv"]}"
+    installer_lv  = "${var.installer_size}"
   }
 }
 
@@ -177,8 +178,9 @@ data "template_file" "createfs_proxy" {
   template = "${file("${path.module}/scripts/createfs_proxy.sh.tpl")}"
 
   vars {
-    kubelet_lv = "${var.proxy["kubelet_lv"]}"
-    docker_lv  = "${var.proxy["docker_lv"]}"
+    kubelet_lv   = "${var.proxy["kubelet_lv"]}"
+    docker_lv    = "${var.proxy["docker_lv"]}"
+    installer_lv = "${var.installer_size}"
   }
 }
 
@@ -189,6 +191,7 @@ data "template_file" "createfs_management" {
     kubelet_lv    = "${var.management["kubelet_lv"]}"
     docker_lv     = "${var.management["docker_lv"]}"
     management_lv = "${var.management["management_lv"]}"
+    installer_lv  = "${var.installer_size}"
   }
 }
 
@@ -196,9 +199,10 @@ data "template_file" "createfs_va" {
   template = "${file("${path.module}/scripts/createfs_va.sh.tpl")}"
 
   vars {
-    kubelet_lv = "${var.va["kubelet_lv"]}"
-    docker_lv  = "${var.va["docker_lv"]}"
-    va_lv      = "${var.va["va_lv"]}"
+    kubelet_lv   = "${var.va["kubelet_lv"]}"
+    docker_lv    = "${var.va["docker_lv"]}"
+    va_lv        = "${var.va["va_lv"]}"
+    installer_lv = "${var.installer_size}"
   }
 }
 
@@ -206,8 +210,9 @@ data "template_file" "createfs_worker" {
   template = "${file("${path.module}/scripts/createfs_worker.sh.tpl")}"
 
   vars {
-    kubelet_lv = "${var.worker["kubelet_lv"]}"
-    docker_lv  = "${var.worker["docker_lv"]}"
+    kubelet_lv   = "${var.worker["kubelet_lv"]}"
+    docker_lv    = "${var.worker["docker_lv"]}"
+    installer_lv = "${var.installer_size}"
   }
 }
 
@@ -238,7 +243,7 @@ resource "aws_instance" "master" {
   ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
-    volume_size = "${var.master["kubelet_lv"] + var.master["docker_lv"] + var.master["registry_lv"] + var.master["etcd_lv"] + var.master["management_lv"] + 1}"
+    volume_size = "${var.installer_size + var.master["kubelet_lv"] + var.master["docker_lv"] + var.master["registry_lv"] + var.master["etcd_lv"] + var.master["management_lv"] + 1}"
   }
 
   connection {
@@ -278,7 +283,7 @@ resource "aws_instance" "proxy" {
   ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
-    volume_size = "${var.proxy["kubelet_lv"] + var.proxy["docker_lv"] + 1}"
+    volume_size = "${var.installer_size + var.proxy["kubelet_lv"] + var.proxy["docker_lv"] + 1}"
   }
 
   connection {
@@ -338,7 +343,7 @@ resource "aws_instance" "management" {
   ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
-    volume_size = "${var.management["kubelet_lv"] + var.management["docker_lv"] + var.management["management_lv"] + 1}"
+    volume_size = "${var.installer_size + var.management["kubelet_lv"] + var.management["docker_lv"] + var.management["management_lv"] + 1}"
   }
 
   connection {
@@ -398,7 +403,7 @@ resource "aws_instance" "va" {
   ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
-    volume_size = "${var.va["kubelet_lv"] + var.va["docker_lv"] + var.va["va_lv"] + 1}"
+    volume_size = "${var.installer_size + var.va["kubelet_lv"] + var.va["docker_lv"] + var.va["va_lv"] + 1}"
   }
 
   connection {
@@ -440,7 +445,7 @@ resource "aws_instance" "worker" {
   ebs_block_device {
     device_name = "/dev/sdf"
     volume_type = "gp2"
-    volume_size = "${var.worker["kubelet_lv"] + var.worker["docker_lv"] + 1}"
+    volume_size = "${var.installer_size + var.worker["kubelet_lv"] + var.worker["docker_lv"] + 1}"
   }
 
   connection {
@@ -605,6 +610,7 @@ module "icpprovision" {
     "proxy_lb_address"               = "${element(split(",",var.proxy["nodes"] == 0 ? join(",",aws_instance.master.*.public_ip) : join(",",aws_instance.proxy.*.public_ip)), 0)}"
     "calico_ip_autodetection_method" = "can-reach=${aws_instance.master.0.private_ip}"
     "disabled_management_services"   = ["${split(",",var.va["nodes"] != 0 ? join(",",var.disable_management) : join(",",concat(list("vulnerability-advisor"),var.disable_management)))}"]
+    "kibana_install"                 = "true"
 
     #"cluster_access_ip"        = "${aws_instance.master.0.public_ip}"
     #"proxy_access_ip"          = "${aws_instance.proxy.0.public_ip}"
