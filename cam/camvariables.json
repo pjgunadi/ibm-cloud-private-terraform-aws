@@ -186,7 +186,7 @@
     "name": "gluster",
     "label": "Gluster Node",
     "description": "Gluster Node Informations",
-    "default": {"nodes": "3", "name": "worker", "instance_type": "t2.xlarge", "glusterfs":"100"},
+    "default": {"nodes": "3", "name": "gluster", "instance_type": "t2.xlarge", "glusterfs":"100"},
     "hidden": false,
     "immutable": false,
     "required": true,
