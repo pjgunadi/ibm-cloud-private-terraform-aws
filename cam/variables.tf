@@ -141,8 +141,8 @@ variable "management" {
     name          = "management"
     instance_type = "t2.xlarge"
     kubelet_lv    = "10"
-    docker_lv     = "39"
-    management_lv = "100"
+    docker_lv     = "50"
+    management_lv = "139"
   }
 }
 
@@ -154,8 +154,8 @@ variable "va" {
     name          = "va"
     instance_type = "t2.xlarge"
     kubelet_lv    = "10"
-    docker_lv     = "39"
-    va_lv         = "100"
+    docker_lv     = "50"
+    va_lv         = "139"
   }
 }
 

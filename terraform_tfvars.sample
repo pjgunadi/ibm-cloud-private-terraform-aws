@@ -39,16 +39,16 @@ management = {
     name          = "mgmt"
     instance_type = "t2.xlarge"
     kubelet_lv    = "10"
-    docker_lv     = "39"
-    management_lv = "100"                       #Management volume size
+    docker_lv     = "50"
+    management_lv = "139"                       #Management volume size
 }
 va = {
     nodes         = "0"
     name          = "va"
     instance_type = "t2.xlarge"
     kubelet_lv    = "10"
-    docker_lv     = "39"
-    va_lv         = "100"                       #Management volume size
+    docker_lv     = "50"
+    va_lv         = "139"                       #Management volume size
 }
 worker = {
     nodes         = "2"
