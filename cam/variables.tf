@@ -129,7 +129,7 @@ variable "proxy" {
     name          = "proxy"
     instance_type = "t2.medium"
     kubelet_lv    = "10"
-    docker_lv     = "39"
+    docker_lv     = "64"
   }
 }
 
