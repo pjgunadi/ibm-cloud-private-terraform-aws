@@ -610,7 +610,8 @@ module "icpprovision" {
     "proxy_lb_address"               = "${element(split(",",var.proxy["nodes"] == 0 ? join(",",aws_instance.master.*.public_ip) : join(",",aws_instance.proxy.*.public_ip)), 0)}"
     "calico_ip_autodetection_method" = "can-reach=${aws_instance.master.0.private_ip}"
     "disabled_management_services"   = ["${split(",",var.va["nodes"] != 0 ? join(",",var.disable_management) : join(",",concat(list("vulnerability-advisor"),var.disable_management)))}"]
-    "kibana_install"                 = "${var.kibana_install}"
+
+    #"kibana_install"                 = "${var.kibana_install}"
 
     #"cluster_access_ip"        = "${aws_instance.master.0.public_ip}"
     #"proxy_access_ip"          = "${aws_instance.proxy.0.public_ip}"
