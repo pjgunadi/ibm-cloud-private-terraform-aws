@@ -33,23 +33,13 @@
   {
     "name": "image_id",
     "label": "Image ID",
-    "description": "EC2 Image ID",
+    "description": "Image ID in the AWS Region. Eg. Singapore: Ubuntu: ami-10acfb73 ; Redhat: ami-10bb2373",
     "default": "ami-10acfb73",
     "hidden": false,
     "immutable": false,
     "required": true,
     "secured": false,
     "type": "string",
-    "options": [
-      {
-        "value": "ami-10acfb73",
-        "label": "Ubuntu 16.04"
-      },
-      {
-          "value": "ami-10bb2373",
-          "label": "Redhat 7.4"
-      }
-    ],
     "group_name": "cloud"
   },
   {
