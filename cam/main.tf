@@ -147,7 +147,7 @@ resource "aws_security_group" "elb_secgrp" {
 
 #Test ELB
 resource "aws_elb" "master_elb" {
-  name = "master-elb"
+  name = "${format("%s-%s", lower(var.cluster_name), lower(var.master["name"]))}-elb"
 
   subnets         = ["${aws_subnet.icp_subnet.id}"]
   security_groups = ["${aws_security_group.elb_secgrp.id}"]
