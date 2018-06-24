@@ -35,7 +35,7 @@ mkdir -p /var/lib/docker
 mkdir -p /var/lib/kubelet
 mkdir -p /var/lib/etcd
 mkdir -p /var/lib/registry
-mkdir -p /opt/ibm/cfc
+mkdir -p /opt/ibm/icp
 mkdir -p /opt/ibm/cluster
 
 #Add mount in /etc/fstab
@@ -44,7 +44,7 @@ cat <<EOL | tee -a /etc/fstab
 /dev/mapper/icp--vg-docker--lv /var/lib/docker ext4 defaults 0 0
 /dev/mapper/icp--vg-etcd--lv /var/lib/etcd ext4 defaults 0 0
 /dev/mapper/icp--vg-registry--lv /var/lib/registry ext4 defaults 0 0
-/dev/mapper/icp--vg-management--lv /opt/ibm/cfc ext4 defaults 0 0
+/dev/mapper/icp--vg-management--lv /opt/ibm/icp ext4 defaults 0 0
 /dev/mapper/icp--vg-installer--lv /opt/ibm/cluster ext4 defaults 0 0
 EOL
 
