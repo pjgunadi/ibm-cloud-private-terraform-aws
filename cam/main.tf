@@ -320,7 +320,7 @@ resource "aws_instance" "proxy" {
 
   provisioner "local-exec" {
     when    = "destroy"
-    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_node.sh; /tmp/delete_node.sh ${var.icp_version} ${self.private_ip}\"; echo done"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_node.sh; /tmp/delete_node.sh ${var.icp_version} ${self.private_ip} proxy\"; echo done"
   }
 }
 
@@ -380,7 +380,7 @@ resource "aws_instance" "management" {
 
   provisioner "local-exec" {
     when    = "destroy"
-    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_node.sh; /tmp/delete_node.sh ${var.icp_version} ${self.private_ip}\"; echo done"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_node.sh; /tmp/delete_node.sh ${var.icp_version} ${self.private_ip} management\"; echo done"
   }
 }
 
@@ -482,7 +482,7 @@ resource "aws_instance" "worker" {
 
   provisioner "local-exec" {
     when    = "destroy"
-    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_node.sh; /tmp/delete_node.sh ${var.icp_version} ${self.private_ip}\"; echo done"
+    command = "ssh -i ${var.key_pair_name} ${local.ssh_options} ${var.ssh_user}@${local.icp_boot_node_ip} \"chmod +x /tmp/delete_node.sh; /tmp/delete_node.sh ${var.icp_version} ${self.private_ip} worker\"; echo done"
   }
 }
 
