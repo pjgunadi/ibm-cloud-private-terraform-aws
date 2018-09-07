@@ -16,6 +16,12 @@ install_gluster = true                          #Flag to install gluster
 gluster_volume_type = "none"                    #Gluster Volume Type. Sample: none, replicate:3, disperse:4:2
 heketi_admin_pwd = "your-password"              #Heketi API admin password
 disable_management = ["istio", "custom-metrics-adapter"] #Default Disabled management component v2.1.0.3
+management_services = {                         #Default Disabled management component v3.1.0
+  istio = "disabled"
+  vulnerability-advisor = "disabled"
+  storage-glusterfs = "disabled"
+  storage-minio = "disabled"
+}
 installer_size = "20"                           #Installer Mount Point Size
 master = {
     nodes         = "1"
