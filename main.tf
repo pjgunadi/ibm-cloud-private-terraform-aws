@@ -218,8 +218,11 @@ data "template_file" "createfs_worker" {
 
 //locals
 locals {
-  icp_boot_node_ip = "${aws_instance.master.0.public_ip}"
-  heketi_ip        = "${aws_instance.gluster.0.public_ip}"
+  #icp_boot_node_ip = "${aws_instance.master.0.public_ip}"
+  icp_boot_node_ip = "${aws_instance.master.0.private_ip}"
+  #heketi_ip        = "${aws_instance.gluster.0.public_ip}"
+  heketi_ip        = "${aws_instance.gluster.0.private_ip}"
+
   ssh_options      = "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 }
 
@@ -249,7 +252,12 @@ resource "aws_instance" "master" {
   connection {
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.ssh.private_key_pem}"
-    host        = "${self.public_ip}"
+    #host        = "${self.public_ip}"
+    host        = "${self.private_ip}"
+    bastion_host        = "${var.bastion_host}"
+    bastion_user        = "${var.bastion_user}"
+    bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
+
   }
 
   provisioner "file" {
@@ -289,7 +297,11 @@ resource "aws_instance" "proxy" {
   connection {
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.ssh.private_key_pem}"
-    host        = "${self.public_ip}"
+    #host        = "${self.public_ip}"
+    host        = "${self.private_ip}"
+    bastion_host        = "${var.bastion_host}"
+    bastion_user        = "${var.bastion_user}"
+    bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
   }
 
   provisioner "file" {
@@ -349,7 +361,11 @@ resource "aws_instance" "management" {
   connection {
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.ssh.private_key_pem}"
-    host        = "${self.public_ip}"
+    #host        = "${self.public_ip}"
+    host        = "${self.private_ip}"
+    bastion_host        = "${var.bastion_host}"
+    bastion_user        = "${var.bastion_user}"
+    bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
   }
 
   provisioner "file" {
@@ -409,7 +425,11 @@ resource "aws_instance" "va" {
   connection {
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.ssh.private_key_pem}"
-    host        = "${self.public_ip}"
+    #host        = "${self.public_ip}"
+    host        = "${self.private_ip}"
+    bastion_host        = "${var.bastion_host}"
+    bastion_user        = "${var.bastion_user}"
+    bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
   }
 
   provisioner "file" {
@@ -471,7 +491,11 @@ resource "aws_instance" "worker" {
   connection {
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.ssh.private_key_pem}"
-    host        = "${self.public_ip}"
+    #host        = "${self.public_ip}"
+    host        = "${self.private_ip}"
+    bastion_host        = "${var.bastion_host}"
+    bastion_user        = "${var.bastion_user}"
+    bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
   }
 
   provisioner "file" {
@@ -534,7 +558,11 @@ resource "aws_instance" "gluster" {
   connection {
     user        = "${var.ssh_user}"
     private_key = "${tls_private_key.ssh.private_key_pem}"
-    host        = "${self.public_ip}"
+    #host        = "${self.public_ip}"
+    host        = "${self.private_ip}"
+    bastion_host        = "${var.bastion_host}"
+    bastion_user        = "${var.bastion_user}"
+    bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
   }
 
   provisioner "local-exec" {
@@ -585,13 +613,15 @@ resource "null_resource" "copy_delete_gluster" {
 }
 
 module "icpprovision" {
-  source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=3.1.0"
+  #source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=3.1.0"
+  source = "github.com/pjgunadi/terraform-module-icp-deploy?ref=test"
 
   //Connection IPs
-  #icp-ips   = "${concat(aws_instance.master.*.public_ip, aws_instance.proxy.*.public_ip, aws_instance.management.*.public_ip, aws_instance.va.*.public_ip, aws_instance.worker.*.public_ip)}"
-  icp-ips = "${concat(aws_instance.master.*.public_ip)}"
+  #icp-ips = "${concat(aws_instance.master.*.public_ip)}"
+  icp-ips = "${concat(aws_instance.master.*.private_ip)}"
 
-  boot-node = "${element(aws_instance.master.*.public_ip, 0)}"
+  #boot-node = "${element(aws_instance.master.*.public_ip, 0)}"
+  boot-node = "${element(aws_instance.master.*.private_ip, 0)}"
 
   //Configuration IPs
   icp-master     = ["${aws_instance.master.*.private_ip}"]
@@ -635,11 +665,6 @@ module "icpprovision" {
       "storage-glusterfs" = "${var.management_services["storage-glusterfs"]}"
       "storage-minio" = "${var.management_services["storage-minio"]}"
     }
-    #"kibana_install"                 = "${var.kibana_install}"
-
-    #"cluster_access_ip"        = "${aws_instance.master.0.public_ip}"
-    #"proxy_access_ip"          = "${aws_instance.proxy.0.public_ip}"
-    #"proxy_access_ip"          = "${aws_instance.master.0.public_ip}"
   }
 
   #Gluster
@@ -647,10 +672,12 @@ module "icpprovision" {
   install_gluster = "${var.install_gluster}"
 
   gluster_size        = "${var.gluster["nodes"]}"
-  gluster_ips         = ["${aws_instance.gluster.*.public_ip}"]
+  #gluster_ips         = ["${aws_instance.gluster.*.public_ip}"]
+  gluster_ips         = ["${aws_instance.gluster.*.private_ip}"]
   gluster_svc_ips     = ["${aws_instance.gluster.*.private_ip}"]
   device_name         = "/dev/xvdf"                              #update according to the device name provided by cloud provider
-  heketi_ip           = "${aws_instance.gluster.0.public_ip}"
+  #heketi_ip           = "${aws_instance.gluster.0.public_ip}"
+  heketi_ip           = "${aws_instance.gluster.0.private_ip}"
   heketi_svc_ip       = "${aws_instance.gluster.0.private_ip}"
   cluster_name        = "${var.cluster_name}.icp"
   gluster_volume_type = "${var.gluster_volume_type}"
@@ -662,4 +689,8 @@ module "icpprovision" {
 
   ssh_user = "${var.ssh_user}"
   ssh_key  = "${tls_private_key.ssh.private_key_pem}"
+
+  bastion_host        = "${var.bastion_host}"
+  bastion_user        = "${var.bastion_user}"
+  bastion_private_key = "${file("${path.module}/${var.bastion_private_key}")}"
 }

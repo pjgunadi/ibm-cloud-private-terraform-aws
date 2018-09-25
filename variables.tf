@@ -116,6 +116,16 @@ variable "installer_size" {
   default = "20"
 }
 
+variable "bastion_host" {
+  default = ""
+}
+variable "bastion_user" {
+  default = ""
+}
+variable "bastion_private_key" {
+  default = ""
+}
+ 
 variable "master" {
   type = "map"
 
